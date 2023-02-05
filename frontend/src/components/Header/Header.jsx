@@ -10,7 +10,7 @@ const Header = ({ navbar }) => {
         {navbar ? <Navbar /> : <></>}
         <div className="header-content flex flex-c text-center text-white">
           <h2 className="header-title text-capitalize">
-            find your book of choice.
+            Find your book of choice.
           </h2>
           <br />
           <p className="header-text fs-18 fw-3">
