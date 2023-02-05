@@ -1,0 +1,25 @@
+.buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.books {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.checked {
+  background-color: aqua;
+}
+
+@media screen and (max-width: 600px) {
+  .buttons {
+    display: block;
+  }
+
+  .buttons button {
+    width: 100%;
+  }
+}
