@@ -22,8 +22,8 @@ const BookList = () => {
     <section className="booklist">
       <div className="container">
         <div className="booklist-content grid">
-          {books.map((item, index) => {
-            return <Book key={index} book={item} />
+          {books.map((book) => {
+            return <Book key={book.id} book={book} />
           })}
         </div>
       </div>
