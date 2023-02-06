@@ -1,15 +1,15 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import React, { useState } from "react";
-import User from "./pages/page/UserPage/User";
-import Home from "./pages/page/Home";
-import Reservations from "./components/BookList/Reservations";
-import RegistrationPage from "./pages/page/RegistrationPage/RegistrationPage";
-import Login from "./pages/page/LoginPage/Login";
-import AllBooksPage from "./pages/page/AllBooksPage";
-import AdminPage from "./pages/page/AdminPage/Admin";
+import { BrowserRouter, Routes, Route } from "react-router-dom"
+import React, { useState } from "react"
+import User from "./pages/page/UserPage/User"
+import Home from "./pages/page/Home"
+import Reservations from "./components/BookList/Reservations"
+import RegistrationPage from "./pages/page/RegistrationPage/RegistrationPage"
+import Login from "./pages/page/LoginPage/Login"
+import AllBooksPage from "./pages/page/AllBooksPage"
+import AdminPage from "./pages/page/AdminPage/Admin"
 
 function App() {
-  const [reservations, setReservations] = useState([]);
+  const [reservations, setReservations] = useState([])
   const [books, setBooks] = useState([
     {
       id: 1,
@@ -119,36 +119,36 @@ function App() {
         "Most of us assume financial success depends on education and intelligence. But in The Psychology of Money, finance expert Morgan Housel presents an alternate hypothesis: The key to financial success lies in understanding human behavior. Housel posits that when you understand how emotions and beliefs influence your financial decisions, you’ll make better financial decisions.",
       checked: false,
     },
-  ]);
+  ])
 
   const addToReservations = (id) => {
-    console.log(id);
+    console.log(id)
     books.forEach((book) => {
       if (book.id === id) {
-        book.checked = true;
-        refresh();
+        book.checked = true
+        refresh()
       }
-    });
-  };
+    })
+  }
 
   const removeFromReservation = (id) => {
     books.forEach((book) => {
       if (book.id === id) {
-        book.checked = false;
-        refresh();
+        book.checked = false
+        refresh()
       }
-    });
-  };
+    })
+  }
 
   const refresh = () => {
-    let newReservations = [];
+    let newReservations = []
     books.forEach((book) => {
       if (book.checked === true) {
-        newReservations.push(book);
+        newReservations.push(book)
       }
-    });
-    setReservations(newReservations);
-  };
+    })
+    setReservations(newReservations)
+  }
 
   return (
     <BrowserRouter>
@@ -156,25 +156,16 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route
           path="/user"
-          element={
-            <User
-              books={books}
-              add={addToReservations}
-              remove={removeFromReservation}
-            />
-          }
+          element={<User books={books} add={addToReservations} remove={removeFromReservation} />}
         />
-        <Route
-          path="/reservations"
-          element={<Reservations reservations={reservations} />}
-        />
+        <Route path="/reservations" element={<Reservations reservations={reservations} />} />
         <Route path="/login" element={<Login />} />
         <Route path="/books" element={<AllBooksPage books={books} />} />
         <Route path="/register" element={<RegistrationPage />} />
-        <Route path="/admin" element={<AdminPage books={books} />} />
+        <Route path="/admin" element={<AdminPage />} />
       </Routes>
     </BrowserRouter>
-  );
+  )
 }
 
-export default App;
+export default App
