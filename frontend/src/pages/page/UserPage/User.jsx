@@ -3,11 +3,29 @@ import BookList from "../../../components/BookList/BookList";
 import Button from "../../../components/Button/Button";
 import { Link } from "react-router-dom";
 import Header from "../../../components/Header/Header";
+import { Avatar } from "antd";
 
 function User({ books, add, remove }) {
   return (
     <div>
       <Header />
+      <br />
+      <br />
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          gap: "20px",
+        }}
+      >
+        <Avatar
+          src={`https://xsgames.co/randomusers/assets/avatars/pixel/46.jpg`}
+          style={{ width: "15vh", height: "15vh" }}
+        />
+        <p>email</p>
+      </div>
+      <br />
       <br />
       <div className="buttons">
         <button className="myButton">
@@ -35,7 +53,7 @@ function User({ books, add, remove }) {
       </div>
       <br />
       <div className="books">
-        <BookList books={books} add={add} remove={remove} show={true} />
+        <BookList books={books} add={add} remove={remove} />
       </div>
     </div>
   );

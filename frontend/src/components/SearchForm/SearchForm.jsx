@@ -13,7 +13,7 @@ const SearchForm = () => {
               <input
                 type="text"
                 className="form-control"
-                placeholder="The Lost World ..."
+                placeholder="Author ..."
               />
               <button type="submit" className="flex flex-c">
                 <FaSearch className="text-purple" size={32} />
