@@ -13,11 +13,7 @@ const Header = ({ navbar }) => {
             Find your book of choice.
           </h2>
           <br />
-          <p className="header-text fs-18 fw-3">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam beatae
-            sapiente quibusdam consequatur perspiciatis facere laboriosam non
-            nesciunt at id repudiandae, modi iste? Eligendi, rerum!
-          </p>
+          <p className="header-text fs-18 fw-3"></p>
           <SearchForm />
         </div>
       </header>

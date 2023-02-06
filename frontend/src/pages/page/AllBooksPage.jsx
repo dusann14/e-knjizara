@@ -7,7 +7,7 @@ function AllBooksPage({ books }) {
     <div>
       <Header navbar={true} />
       <div className="books">
-        <BookList books={books} show={false} />
+        <BookList books={books} />
       </div>
     </div>
   );
