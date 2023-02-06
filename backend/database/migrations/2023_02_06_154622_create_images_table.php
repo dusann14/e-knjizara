@@ -13,8 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->renameColumn('name', 'username');
+        Schema::create('images', function (Blueprint $table) {
+            $table->id();
+            // $table->foreignId('bookid');
+            $table->string('url');
+            $table->string('path');
+            $table->timestamps();
         });
     }
 
@@ -25,8 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->renameColumn('username', 'name');
-        });
+        Schema::dropIfExists('images');
     }
 };

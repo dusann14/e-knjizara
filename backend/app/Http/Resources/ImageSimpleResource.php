@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class UserResource extends JsonResource
+class ImageSimpleResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -12,14 +12,12 @@ class UserResource extends JsonResource
      * @param  \Illuminate\Http\Request  $request
      * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
      */
-    public static $wrap = 'user';
-
     public function toArray($request)
     {
         return [
             'id' => $this->resource->id,
-            'name' => $this->resource->name,
-            'email' => $this->resource->email
+            'url' => $this->resource->url,
+            'path' => $this->resource->path,
         ];
     }
 }

@@ -13,7 +13,8 @@ class Book extends Model
         'title',
         'author',
         'price',
-        'description'
+        'description',
+        'imageid'
     ];
 
     protected $hidden = [
@@ -24,5 +25,10 @@ class Book extends Model
     public function reservations()
     {
         return $this->hasMany(Reservation::class);
+    }
+
+    public function image()
+    {
+        return $this->belongsTo(Image::class, "imageid");
     }
 }

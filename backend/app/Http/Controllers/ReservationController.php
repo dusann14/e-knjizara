@@ -8,41 +8,59 @@ use App\Http\Resources\ReservationCollection;
 use App\Http\Resources\ReservationResource;
 use App\Models\Book;
 use App\Models\Reservation;
+use App\Models\User;
 
 class ReservationController extends Controller
 {
     public function index($user_id)
     {
-        $reservations = Reservation::where('user_id', $user_id)->get();
+        $reservations = Reservation::get()->where('user_id', $user_id);
 
         if ($reservations->isEmpty()) {
-            return response()->json('Data not found', 404);
+            return response()->json(['message' => 'data not found'], 404);
         }
         return new ReservationCollection($reservations);
     }
 
-    public function store($user_id, Request $request)
+    public function store($userid, Request $request)
     {
-
         $validator = Validator::make($request->all(), [
-            'book_id' => 'required|integer',
+            'bookid' => 'required|integer'
         ]);
 
         if ($validator->fails()) {
             return response()->json($validator->errors());
         }
 
-        $books = Book::where('id', $request->book_id)->get();
+        $book = Book::find($request->bookid);
+        $user = User::find($userid);
 
-        if ($books->isEmpty()) {
-            return response()->json('No such book in database', 404);
+        if (is_null($book) || is_null($user)) {
+            return response()->json(['message' => 'data not found'], 403);
         }
 
         $reservation = Reservation::create([
-            'book_id' => $request->book_id,
-            'user_id' => $user_id
+            'book_id' => $book->id,
+            'user_id' => $user->id
         ]);
 
-        return response()->json(['Reservation created successfully', new ReservationResource($reservation)]);
+        return response()->json(['message' => 'reservation created successfully', 'reservation' => new ReservationResource($reservation)], 200);
+    }
+
+    public function destroy($userid, $reservationid)
+    {
+        $reservation = Reservation::find($reservationid);
+
+        if (is_null($reservation)) {
+            return response()->json(['message' => 'data not found'], 403);
+        }
+
+        if ($reservation->user_id != $userid) {
+            return response()->json(['message' => 'invalid user'], 403);
+        }
+
+        $reservation->delete();
+
+        return response()->json(['message' => 'reservation deleted successfully'], 200);
     }
 }
