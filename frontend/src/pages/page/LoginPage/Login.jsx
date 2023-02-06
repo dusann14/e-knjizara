@@ -37,6 +37,9 @@ function LoginPage() {
       })
       .catch(function (error) {
         console.log(error)
+        if (error.response.status == 401) {
+          alert("invalid email password combination")
+        }
       })
   }
 
