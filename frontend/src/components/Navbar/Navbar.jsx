@@ -1,36 +1,50 @@
-import React, { useState } from "react"
-import { Link } from "react-router-dom"
-import "./Navbar.css"
-import { HiOutlineMenuAlt3 } from "react-icons/hi"
-import axios from "axios"
-import { useNavigate } from "react-router-dom"
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import "./Navbar.css";
+import { HiOutlineMenuAlt3 } from "react-icons/hi";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
-  const [toggleMenu, setToggleMenu] = useState(false)
-  const handleNavbar = () => setToggleMenu(!toggleMenu)
+  const [toggleMenu, setToggleMenu] = useState(false);
+  const handleNavbar = () => setToggleMenu(!toggleMenu);
 
-  let navigate = useNavigate()
+  let navigate = useNavigate();
 
   function items() {
     if (sessionStorage.length == 0) {
       return (
         <>
           <li className="nav-item">
-            <Link to="/register" className="nav-link text-uppercase text-purple fs-22 fw-6 ls-1">
+            <Link
+              to="/register"
+              className="nav-link text-uppercase text-purple fs-22 fw-6 ls-1"
+            >
               register
             </Link>
           </li>
           <li className="nav-item">
-            <Link to="/login" className="nav-link text-uppercase text-purple fs-22 fw-6 ls-1">
+            <Link
+              to="/login"
+              className="nav-link text-uppercase text-purple fs-22 fw-6 ls-1"
+            >
               login
             </Link>
           </li>
         </>
-      )
+      );
     } else {
       return (
         <>
           {" "}
+          <li className="nav-item">
+            <button
+              onClick={() => navigate("/user")}
+              className="nav-link text-uppercase text-purple fs-22 fw-6 ls-1"
+            >
+              profile
+            </button>
+          </li>
           <li className="nav-item">
             <button
               onClick={handleLogout}
@@ -40,7 +54,7 @@ const Navbar = () => {
             </button>
           </li>
         </>
-      )
+      );
     }
   }
 
@@ -51,17 +65,17 @@ const Navbar = () => {
       headers: {
         Authorization: "Bearer " + sessionStorage.getItem("token"),
       },
-    }
+    };
 
     axios(config)
       .then(function (response) {
-        console.log(JSON.stringify(response.data))
-        sessionStorage.clear()
-        navigate("/")
+        console.log(JSON.stringify(response.data));
+        sessionStorage.clear();
+        navigate("/");
       })
       .catch(function (error) {
-        console.log(error)
-      })
+        console.log(error);
+      });
   }
 
   return (
@@ -69,7 +83,11 @@ const Navbar = () => {
       <div className="container" style={{ display: "flex" }}>
         <div className="brand-and-toggler flex flex-sb">
           <span className="text-uppercase fw-7 fs-24 ls-1">Book store</span>
-          <button type="button" className="navbar-toggler-btn" onClick={handleNavbar}>
+          <button
+            type="button"
+            className="navbar-toggler-btn"
+            onClick={handleNavbar}
+          >
             <HiOutlineMenuAlt3
               size={35}
               style={{
@@ -79,15 +97,27 @@ const Navbar = () => {
           </button>
         </div>
 
-        <div className={toggleMenu ? "navbar-collapse show-navbar-collapse" : "navbar-collapse"}>
+        <div
+          className={
+            toggleMenu
+              ? "navbar-collapse show-navbar-collapse"
+              : "navbar-collapse"
+          }
+        >
           <ul className="navbar-nav">
             <li className="nav-item">
-              <Link to="/" className="nav-link text-uppercase text-purple fs-22 fw-6 ls-1">
+              <Link
+                to="/"
+                className="nav-link text-uppercase text-purple fs-22 fw-6 ls-1"
+              >
                 Home
               </Link>
             </li>
             <li className="nav-item">
-              <Link to="/books" className="nav-link text-uppercase text-purple fs-22 fw-6 ls-1">
+              <Link
+                to="/books"
+                className="nav-link text-uppercase text-purple fs-22 fw-6 ls-1"
+              >
                 books
               </Link>
             </li>
@@ -96,7 +126,7 @@ const Navbar = () => {
         </div>
       </div>
     </nav>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;

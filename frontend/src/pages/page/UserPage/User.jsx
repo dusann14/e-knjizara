@@ -5,10 +5,10 @@ import { Link } from "react-router-dom";
 import Header from "../../../components/Header/Header";
 import { Avatar } from "antd";
 
-function User({ books, add, remove }) {
+function User() {
   return (
     <div>
-      <Header />
+      <Header navbar={true} />
       <br />
       <br />
       <div
@@ -53,7 +53,7 @@ function User({ books, add, remove }) {
       </div>
       <br />
       <div className="books">
-        <BookList books={books} add={add} remove={remove} />
+        <BookList />
       </div>
     </div>
   );
