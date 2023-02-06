@@ -33,7 +33,11 @@ function LoginPage() {
         let profilePicture =
           "https://xsgames.co/randomusers/assets/avatars/pixel/" + response.data.user.id + ".jpg"
         sessionStorage.setItem("profile_image", profilePicture)
-        navigate("/")
+        if (response.data.user.email == "admin@gmail.com") {
+          navigate("/admin")
+        } else {
+          navigate("/")
+        }
       })
       .catch(function (error) {
         console.log(error)
