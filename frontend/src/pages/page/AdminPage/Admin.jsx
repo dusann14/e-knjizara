@@ -10,7 +10,6 @@ import axios from "axios"
 
 function Admin() {
   const [modalOpen, setModalOpen] = useState(false)
-  const [action, setAction] = useState()
   const [books, setBooks] = useState([])
 
   function closeModal() {
@@ -38,6 +37,13 @@ function Admin() {
         <div class="load"></div>
       </div>
     )
+  }
+
+  if (
+    sessionStorage.length == 0 ||
+    JSON.parse(sessionStorage.getItem("logged_user")).email != "admin@gmail.com"
+  ) {
+    return <h1>You don't have access to admin page!</h1>
   }
 
   return (
