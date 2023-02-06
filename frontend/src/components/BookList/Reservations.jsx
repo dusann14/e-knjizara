@@ -4,16 +4,16 @@ import Book from "../BookList/Book";
 import Header from "../Header/Header";
 
 function Reservations({ reservations }) {
-  if (reservations == null) return <>You don't have any reservations</>;
+  console.log(reservations);
+  if (reservations.length === 0) return <>You don't have any reservations</>;
 
   return (
     <>
-      <Header />
       <section className="booklist">
         <div className="container">
           <div className="booklist-content grid">
             {reservations.map((item, index) => {
-              return <Book key={index} book={item} />;
+              return <Book key={index} book={item.book} />;
             })}
           </div>
         </div>
