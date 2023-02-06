@@ -53,6 +53,17 @@ const Book = ({ book, removeBook }) => {
     }
   }
 
+  const deleteReservation = async () => {
+    var config = {
+      method: "delete",
+      url: `http://127.0.0.1:8000/api/user//reservations/`,
+      headers: {
+        Authorization: "Bearer " + sessionStorage.getItem("token"),
+      },
+      //  data: data,
+    };
+  };
+
   const addReservation = async () => {
     var data = new FormData();
 
