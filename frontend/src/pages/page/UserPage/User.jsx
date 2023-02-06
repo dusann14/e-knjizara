@@ -1,24 +1,30 @@
-import "./User.css";
-import React, { useState, useEffect } from "react";
-import BookList from "../../../components/BookList/BookList";
-import Button from "../../../components/Button/Button";
-import { Link } from "react-router-dom";
-import Header from "../../../components/Header/Header";
-import Reservations from "../../../components/BookList/Reservations";
-import { Avatar } from "antd";
-import axios from "axios";
+import "./User.css"
+import React, { useState, useEffect } from "react"
+import BookList from "../../../components/BookList/BookList"
+import Button from "../../../components/Button/Button"
+import { Link } from "react-router-dom"
+import Header from "../../../components/Header/Header"
+import Reservations from "../../../components/BookList/Reservations"
+import { Avatar } from "antd"
+import axios from "axios"
 
 function User() {
-  const [books, setBooks] = useState([]);
+  const [books, setBooks] = useState([])
 
   useEffect(() => {
     async function fetchData() {
-      const response = await getReservations();
-      console.log(response.reservations);
-      setBooks(response.reservations);
+      const response = await getReservations()
+      // console.log(response.reservations)
+      setBooks(response.reservations)
     }
-    fetchData();
-  }, []);
+    fetchData()
+  }, [])
+
+  function removeBook(reservationId) {
+    let newBooksList = books.filter((element) => element.id != reservationId)
+    setBooks(newBooksList)
+  }
+
   /*
   if (books.length == 0) {
     return (
@@ -57,14 +63,14 @@ function User() {
       <br />
       <br />
       <div className="books">
-        <Reservations reservations={books} />
+        <Reservations reservations={books} removeBook={removeBook} />
       </div>
     </div>
-  );
+  )
 }
 
 async function getReservations() {
-  const user = JSON.parse(sessionStorage.getItem("logged_user"));
+  const user = JSON.parse(sessionStorage.getItem("logged_user"))
 
   var config = {
     method: "get",
@@ -72,18 +78,18 @@ async function getReservations() {
     headers: {
       Authorization: "Bearer " + sessionStorage.getItem("token"),
     },
-  };
+  }
 
   let res = axios(config)
     .then(function (response) {
-      return response.data;
+      return response.data
     })
     .catch(function (error) {
       // console.log(error)
-      return error;
-    });
+      return error
+    })
 
-  return res;
+  return res
 }
 
-export default User;
+export default User
