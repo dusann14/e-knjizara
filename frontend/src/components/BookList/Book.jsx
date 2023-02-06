@@ -1,22 +1,23 @@
-import React, { useState } from "react";
-import "./BookList.css";
-import { ImPlus } from "react-icons/im";
-import { ImMinus } from "react-icons/im";
-import { Button } from "antd";
-import { EditFilled, DeleteFilled } from "@ant-design/icons";
-import ColumnGroup from "antd/es/table/ColumnGroup";
+import React, { useState } from "react"
+import "./BookList.css"
+import { ImPlus } from "react-icons/im"
+import { ImMinus } from "react-icons/im"
+import { Button } from "antd"
+import { EditFilled, DeleteFilled } from "@ant-design/icons"
+import ColumnGroup from "antd/es/table/ColumnGroup"
+import axios from "axios"
 
-const Book = ({ book, add, remove }) => {
+const Book = ({ book, removeBook }) => {
   function buttons() {
-    const user = JSON.parse(sessionStorage.getItem("logged_user"));
+    const user = JSON.parse(sessionStorage.getItem("logged_user"))
 
-    if (user.email.split("@")[0] === "admin") {
+    if (user.email === "admin@gmail.com") {
       return (
         <div className="minusplus">
-          <Button className="btn" onClick={() => {}} icon={<DeleteFilled />} />
-          <Button className="btn" onClick={() => {}} icon={<EditFilled />} />
+          <Button className="btn" onClick={deleteBook} icon={<DeleteFilled />} />
+          <Button className="btn" onClick={deleteBook} icon={<EditFilled />} />
         </div>
-      );
+      )
     } else {
       return (
         <div className="minusplus">
@@ -27,8 +28,28 @@ const Book = ({ book, add, remove }) => {
             <ImMinus />
           </button>
         </div>
-      );
+      )
     }
+  }
+
+  const deleteBook = async () => {
+    var config = {
+      method: "delete",
+      url: "http://127.0.0.1:8000/api/admin/book/" + book.id,
+      headers: {
+        Authorization: "Bearer " + sessionStorage.getItem("token"),
+      },
+    }
+
+    axios(config)
+      .then(function (response) {
+        console.log(JSON.stringify(response.data))
+        removeBook(book)
+      })
+      .catch(function (error) {
+        console.log(error)
+        alert("error deleting book")
+      })
   }
 
   function image() {
@@ -39,9 +60,9 @@ const Book = ({ book, add, remove }) => {
             "https://t4.ftcdn.net/jpg/04/73/25/49/360_F_473254957_bxG9yf4ly7OBO5I0O5KABlN930GwaMQz.jpg"
           }
         ></img>
-      );
+      )
     } else {
-      return <img src={`http://127.0.0.1:8000${book.image.url}`}></img>;
+      return <img src={`http://127.0.0.1:8000${book.image.url}`}></img>
     }
   }
 
@@ -70,7 +91,7 @@ const Book = ({ book, add, remove }) => {
         {buttons()}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Book;
+export default Book

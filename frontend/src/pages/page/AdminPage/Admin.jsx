@@ -30,6 +30,11 @@ function Admin() {
     setBooks(booksClone)
   }
 
+  function removeBook(book) {
+    let newBooksList = books.filter((element) => element.id != book.id)
+    setBooks(newBooksList)
+  }
+
   if (books.length == 0) {
     return (
       <div>
@@ -115,7 +120,7 @@ function Admin() {
         </Modal>
       </div>
       <br />
-      <BookList books={books} />
+      <BookList books={books} removeBook={removeBook} />
     </div>
   )
 }
