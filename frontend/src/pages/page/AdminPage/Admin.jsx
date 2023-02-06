@@ -75,7 +75,6 @@ function Admin() {
           className="myButton"
           onClick={() => {
             setModalOpen(true)
-            setAction("Add")
           }}
         >
           <span></span>
