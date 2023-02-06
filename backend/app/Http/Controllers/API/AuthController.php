@@ -30,9 +30,9 @@ class AuthController extends Controller
             'password' => Hash::make($request->password)
         ]);
 
-        $token = $user->createToken('auth-token')->plainTextToken;
+        // $token = $user->createToken('auth-token')->plainTextToken;
 
-        return response()->json(['data' => new UserResource($user), 'token' => $token, 'token-type' => 'Bearer']);
+        return response()->json(['data' => new UserResource($user)], 200);
     }
 
     public function login(Request $request)
@@ -52,6 +52,6 @@ class AuthController extends Controller
     public function logout()
     {
         auth()->user()->tokens()->delete();
-        return response()->json(['message' => 'You have successfully logged out']);
+        return response()->json(['message' => 'You have successfully logged out'], 200);
     }
 }
