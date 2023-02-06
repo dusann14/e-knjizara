@@ -29,7 +29,7 @@ class ReservationController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json($validator->errors());
+            return response()->json($validator->errors(), 400);
         }
 
         $book = Book::find($request->bookid);
