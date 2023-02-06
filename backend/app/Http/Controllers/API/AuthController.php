@@ -39,14 +39,14 @@ class AuthController extends Controller
     {
 
         if (!Auth::attempt($request->only('email', 'password'))) {
-            return response()->json(['message' => 'Unauthorized', 401]);
+            return response()->json(['message' => 'Unauthorized'], 401);
         }
 
         $user = User::where('email', $request['email'])->firstOrFail();
 
         $token = $user->createToken('auth-token')->plainTextToken;
 
-        return response()->json(['message' => 'Hi ' . $user->name . ' welcome to home page', 'token' => $token, 'token-type' => 'Bearer']);
+        return response()->json(['message' => 'Hi ' . $user->name . ' welcome to home page', 'user' => $user, 'token' => $token, 'token-type' => 'Bearer']);
     }
 
     public function logout()

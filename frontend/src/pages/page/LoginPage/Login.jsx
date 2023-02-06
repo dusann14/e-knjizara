@@ -1,8 +1,45 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import "./Login.css";
+import React, { useState } from "react"
+import { Link } from "react-router-dom"
+import "./Login.css"
+import { useNavigate } from "react-router-dom"
+import axios from "axios"
 
 function LoginPage() {
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+
+  let navigate = useNavigate()
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+
+    var data = new FormData()
+    data.append("email", email)
+    data.append("password", password)
+
+    var config = {
+      method: "post",
+      url: "http://127.0.0.1:8000/api/login",
+      data: data,
+    }
+
+    axios(config)
+      .then(function (response) {
+        let bigToken = response.data.token
+        let tokenParts = bigToken.split("|")
+        let token = tokenParts[1]
+        sessionStorage.setItem("token", token)
+        sessionStorage.setItem("logged_user", JSON.stringify(response.data.user))
+        let profilePicture =
+          "https://xsgames.co/randomusers/assets/avatars/pixel/" + response.data.user.id + ".jpg"
+        sessionStorage.setItem("profile_image", profilePicture)
+        navigate("/")
+      })
+      .catch(function (error) {
+        console.log(error)
+      })
+  }
+
   return (
     <div className="loginPage">
       <link
@@ -18,8 +55,8 @@ function LoginPage() {
         crossOrigin="anonymous"
       ></link>
       <div className="container">
-        <div className="d-flex justify-content-center h-100">
-          <div className="card">
+        <div className="d-flex justify-content-center align-items-center h-100">
+          <div className="card m-auto">
             <div className="card-header">
               <h3>Sign in!</h3>
               <div className="d-flex justify-content-end social_icon">
@@ -35,7 +72,7 @@ function LoginPage() {
               </div>
             </div>
             <div className="card-body">
-              <form action="">
+              <form onSubmit={handleSubmit}>
                 <div className="input-group form-group">
                   <div className="input-group-prepend">
                     <span className="input-group-text">
@@ -43,12 +80,13 @@ function LoginPage() {
                     </span>
                   </div>
                   <input
-                    name="user_name"
+                    name="email"
                     id="user"
-                    type="text"
+                    type="email"
                     class="form-control"
                     required
-                    placeholder="username"
+                    placeholder="email"
+                    onChange={(e) => setEmail(e.target.value)}
                   />
                 </div>
                 <div className="input-group form-group">
@@ -63,22 +101,14 @@ function LoginPage() {
                     className="form-control"
                     required
                     placeholder="password"
+                    onChange={(e) => setPassword(e.target.value)}
                   />
                 </div>
 
                 <div className="form-group">
-                  <input
-                    onClick={(e) => {
-                      e.preventDefault();
-                      if (document.getElementById("user").value === "admin") {
-                        window.location = "http://localhost:3000/admin";
-                      } else window.location = "http://localhost:3000/user";
-                    }}
-                    name="submit"
-                    type="submit"
-                    value="Login"
-                    className="btn float-right login_btn"
-                  />
+                  <button type="submit" className="btn float-right login_btn">
+                    Login
+                  </button>
                 </div>
               </form>
             </div>
@@ -92,7 +122,7 @@ function LoginPage() {
       </div>
       <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     </div>
-  );
+  )
 }
 
-export default LoginPage;
+export default LoginPage
