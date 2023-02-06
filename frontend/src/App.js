@@ -160,7 +160,7 @@ function App() {
         />
         <Route path="/reservations" element={<Reservations reservations={reservations} />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/books" element={<AllBooksPage books={books} />} />
+        <Route path="/books/:author?" element={<AllBooksPage books={books} />} />
         <Route path="/register" element={<RegistrationPage />} />
         <Route path="/admin" element={<AdminPage />} />
       </Routes>

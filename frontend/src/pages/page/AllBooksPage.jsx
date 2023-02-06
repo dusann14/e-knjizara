@@ -1,18 +1,44 @@
-import React, { useState, useEffect } from "react";
-import Header from "../../components/Header/Header";
-import BookList from "../../components/BookList/BookList";
-import axios from "axios";
+import React, { useState, useEffect } from "react"
+import Header from "../../components/Header/Header"
+import BookList from "../../components/BookList/BookList"
+import axios from "axios"
+import { useParams } from "react-router-dom"
 
 function AllBooksPage() {
-  const [books, setBooks] = useState([]);
+  const { author } = useParams()
+  const [books, setBooks] = useState([])
+
+  const [fetchingDoneAndDataIsEmpty, setEmpty] = useState(false)
 
   useEffect(() => {
     async function fetchData() {
-      const response = await getAllBooks();
-      setBooks(response.data);
+      var response
+      if (author == undefined) {
+        response = await getAllBooks()
+        console.log("ucitava sve knjige")
+      } else {
+        response = await getBooksBySpecifiedAuthor(author)
+      }
+      console.log(response)
+      if (response.status == 200) {
+        setBooks(response.data.data)
+      } else {
+        setEmpty(true)
+      }
     }
-    fetchData();
-  }, []);
+    fetchData()
+  }, [window.location.pathname])
+
+  if (fetchingDoneAndDataIsEmpty) {
+    return (
+      <div>
+        <Header navbar={true} />
+        <div>
+          <h1>No data found</h1>
+        </div>
+      </div>
+    )
+  }
 
   if (books.length == 0) {
     return (
@@ -20,7 +46,7 @@ function AllBooksPage() {
         <Header navbar={true} />
         <div class="load"></div>
       </div>
-    );
+    )
   }
 
   return (
@@ -30,26 +56,44 @@ function AllBooksPage() {
         <BookList books={books} />
       </div>
     </div>
-  );
+  )
 }
 
 async function getAllBooks() {
   var config = {
     method: "get",
     url: "http://127.0.0.1:8000/api/books",
-  };
+  }
 
   let res = axios(config)
     .then(function (response) {
       // console.log(JSON.stringify(response.data))
-      return response.data;
+      return response
     })
     .catch(function (error) {
       // console.log(error)
-      return error;
-    });
+      return error
+    })
 
-  return res;
+  return res
 }
 
-export default AllBooksPage;
+async function getBooksBySpecifiedAuthor(author) {
+  var config = {
+    method: "get",
+    url: "http://127.0.0.1:8000/api/books/" + author,
+  }
+
+  let res = axios(config)
+    .then(function (response) {
+      // console.log(JSON.stringify(response.data))
+      return response
+    })
+    .catch(function (error) {
+      console.log(error)
+      return error
+    })
+  return res
+}
+
+export default AllBooksPage
