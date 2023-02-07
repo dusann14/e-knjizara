@@ -12,6 +12,7 @@ function AllBooksPage() {
 
   useEffect(() => {
     async function fetchData() {
+      setEmpty(false)
       var response
       if (author == undefined) {
         response = await getAllBooks()

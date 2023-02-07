@@ -1,21 +1,21 @@
-import React, { useState } from "react";
-import "./BookList.css";
-import { ImPlus } from "react-icons/im";
-import { ImMinus } from "react-icons/im";
-import { Button } from "antd";
-import { EditFilled, DeleteFilled } from "@ant-design/icons";
-import ColumnGroup from "antd/es/table/ColumnGroup";
-import axios from "axios";
+import React, { useState } from "react"
+import "./BookList.css"
+import { ImPlus } from "react-icons/im"
+import { ImMinus } from "react-icons/im"
+import { Button } from "antd"
+import { EditFilled, DeleteFilled } from "@ant-design/icons"
+import ColumnGroup from "antd/es/table/ColumnGroup"
+import axios from "axios"
 
 const Book = ({ book, removeBook, reservationId, openModal }) => {
   function plusButton() {
     // console.log(window.location.pathname)
-    if (window.location.pathname === "/books") {
+    if (window.location.pathname.startsWith("/books")) {
       return (
         <button className="btn" onClick={() => addReservation()}>
           <ImPlus />
         </button>
-      );
+      )
     }
   }
 
@@ -25,34 +25,30 @@ const Book = ({ book, removeBook, reservationId, openModal }) => {
         <button className="btn" onClick={() => deleteReservation()}>
           <ImMinus />
         </button>
-      );
+      )
     }
   }
 
   function buttons() {
     if (sessionStorage.length == 0) {
-      return <></>;
+      return <></>
     }
-    const user = JSON.parse(sessionStorage.getItem("logged_user"));
+    const user = JSON.parse(sessionStorage.getItem("logged_user"))
 
     if (user.email === "admin@gmail.com") {
       return (
         <div className="minusplus">
-          <Button
-            className="btn"
-            onClick={deleteBook}
-            icon={<DeleteFilled />}
-          />
-          <Button className="btn" onClick={deleteBook} icon={<EditFilled />} />
+          <Button className="btn" onClick={deleteBook} icon={<DeleteFilled />} />
+          <Button className="btn" onClick={() => openModal(book)} icon={<EditFilled />} />
         </div>
-      );
+      )
     } else {
       return (
         <div className="minusplus">
           {plusButton()}
           {minusButton()}
         </div>
-      );
+      )
     }
   }
 
@@ -65,23 +61,23 @@ const Book = ({ book, removeBook, reservationId, openModal }) => {
       headers: {
         Authorization: "Bearer " + sessionStorage.getItem("token"),
       },
-    };
+    }
     axios(config)
       .then(function (response) {
-        console.log(JSON.stringify(response.data));
-        removeBook(reservationId);
+        console.log(JSON.stringify(response.data))
+        removeBook(reservationId)
       })
       .catch(function (error) {
-        console.log(error);
-      });
-  };
+        console.log(error)
+      })
+  }
 
   const addReservation = async () => {
-    var data = new FormData();
+    var data = new FormData()
 
-    data.append("bookid", book.id);
+    data.append("bookid", book.id)
 
-    const user = JSON.parse(sessionStorage.getItem("logged_user"));
+    const user = JSON.parse(sessionStorage.getItem("logged_user"))
 
     var config = {
       method: "post",
@@ -90,17 +86,17 @@ const Book = ({ book, removeBook, reservationId, openModal }) => {
         Authorization: "Bearer " + sessionStorage.getItem("token"),
       },
       data: data,
-    };
+    }
 
     axios(config)
       .then(function (response) {
-        alert("Successfully added reservation");
+        alert("Successfully added reservation")
       })
       .catch(function (error) {
-        console.log(error);
-        alert("error");
-      });
-  };
+        console.log(error)
+        alert("error")
+      })
+  }
 
   const deleteBook = async () => {
     var config = {
@@ -109,18 +105,18 @@ const Book = ({ book, removeBook, reservationId, openModal }) => {
       headers: {
         Authorization: "Bearer " + sessionStorage.getItem("token"),
       },
-    };
+    }
 
     axios(config)
       .then(function (response) {
-        console.log(JSON.stringify(response.data));
-        removeBook(book);
+        console.log(JSON.stringify(response.data))
+        removeBook(book)
       })
       .catch(function (error) {
-        console.log(error);
-        alert("error deleting book");
-      });
-  };
+        console.log(error)
+        alert("error deleting book")
+      })
+  }
 
   function image() {
     if (book.image == null) {
@@ -130,9 +126,9 @@ const Book = ({ book, removeBook, reservationId, openModal }) => {
             "https://t4.ftcdn.net/jpg/04/73/25/49/360_F_473254957_bxG9yf4ly7OBO5I0O5KABlN930GwaMQz.jpg"
           }
         ></img>
-      );
+      )
     } else {
-      return <img src={`http://127.0.0.1:8000${book.image.url}`}></img>;
+      return <img src={`http://127.0.0.1:8000${book.image.url}`}></img>
     }
   }
 
@@ -161,7 +157,7 @@ const Book = ({ book, removeBook, reservationId, openModal }) => {
         {buttons()}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Book;
+export default Book
