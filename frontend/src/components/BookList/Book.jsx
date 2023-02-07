@@ -7,9 +7,9 @@ import { EditFilled, DeleteFilled } from "@ant-design/icons";
 import ColumnGroup from "antd/es/table/ColumnGroup";
 import axios from "axios";
 
-const Book = ({ book, removeBook, openModal }) => {
+const Book = ({ book, removeBook, reservationId, openModal }) => {
   function plusButton() {
-    console.log(window.location.pathname);
+    // console.log(window.location.pathname)
     if (window.location.pathname === "/books") {
       return (
         <button className="btn" onClick={() => addReservation()}>
@@ -22,7 +22,7 @@ const Book = ({ book, removeBook, openModal }) => {
   function minusButton() {
     if (window.location.pathname === "/user") {
       return (
-        <button className="btn" onClick={() => {}}>
+        <button className="btn" onClick={() => deleteReservation()}>
           <ImMinus />
         </button>
       );
@@ -30,6 +30,9 @@ const Book = ({ book, removeBook, openModal }) => {
   }
 
   function buttons() {
+    if (sessionStorage.length == 0) {
+      return <></>;
+    }
     const user = JSON.parse(sessionStorage.getItem("logged_user"));
 
     if (user.email === "admin@gmail.com") {
@@ -40,11 +43,7 @@ const Book = ({ book, removeBook, openModal }) => {
             onClick={deleteBook}
             icon={<DeleteFilled />}
           />
-          <Button
-            className="btn"
-            onClick={() => openModal(book)}
-            icon={<EditFilled />}
-          />
+          <Button className="btn" onClick={deleteBook} icon={<EditFilled />} />
         </div>
       );
     } else {
@@ -60,12 +59,21 @@ const Book = ({ book, removeBook, openModal }) => {
   const deleteReservation = async () => {
     var config = {
       method: "delete",
-      url: `http://127.0.0.1:8000/api/user//reservations/`,
+      url: `http://127.0.0.1:8000/api/user/${
+        JSON.parse(sessionStorage.getItem("logged_user")).id
+      }/reservations/${reservationId}`,
       headers: {
         Authorization: "Bearer " + sessionStorage.getItem("token"),
       },
-      //  data: data,
     };
+    axios(config)
+      .then(function (response) {
+        console.log(JSON.stringify(response.data));
+        removeBook(reservationId);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   };
 
   const addReservation = async () => {
