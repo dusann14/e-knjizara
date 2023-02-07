@@ -7,7 +7,7 @@ import { EditFilled, DeleteFilled } from "@ant-design/icons";
 import ColumnGroup from "antd/es/table/ColumnGroup";
 import axios from "axios";
 
-const Book = ({ book, removeBook }) => {
+const Book = ({ book, removeBook, openModal }) => {
   function plusButton() {
     console.log(window.location.pathname);
     if (window.location.pathname === "/books") {
@@ -40,7 +40,11 @@ const Book = ({ book, removeBook }) => {
             onClick={deleteBook}
             icon={<DeleteFilled />}
           />
-          <Button className="btn" onClick={deleteBook} icon={<EditFilled />} />
+          <Button
+            className="btn"
+            onClick={() => openModal(book)}
+            icon={<EditFilled />}
+          />
         </div>
       );
     } else {

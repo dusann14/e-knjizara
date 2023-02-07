@@ -1,38 +1,46 @@
-import Header from "../../../components/Header/Header"
-import BookList from "../../../components/BookList/BookList"
-import Button from "../../../components/Button/Button"
-import AddBookModal from "../../../components/Modal/AddBookModal"
-import "./Admin.css"
-import { Avatar } from "antd"
-import React, { useState, useEffect } from "react"
-import Modal from "react-modal"
-import axios from "axios"
+import Header from "../../../components/Header/Header";
+import BookList from "../../../components/BookList/BookList";
+import Button from "../../../components/Button/Button";
+import AddBookModal from "../../../components/Modal/AddBookModal";
+import "./Admin.css";
+import { Avatar } from "antd";
+import React, { useState, useEffect } from "react";
+import Modal from "react-modal";
+import axios from "axios";
+import UpdateBookPriceModal from "../../../components/Modal/UpdateBookPriceModal";
 
 function Admin() {
-  const [modalOpen, setModalOpen] = useState(false)
-  const [books, setBooks] = useState([])
+  const [modalAddOpen, setModalAddOpen] = useState(false);
+  const [modalUpdateOpen, setModalUpdateOpen] = useState(false);
+  const [books, setBooks] = useState([]);
+  const [book, setBook] = useState([]);
 
   function closeModal() {
-    setModalOpen(false)
+    setModalAddOpen(false);
+  }
+
+  function openUpdateModal(book) {
+    setBook(book);
+    setModalUpdateOpen(true);
   }
 
   useEffect(() => {
     async function fetchData() {
-      const response = await getAllBooks()
-      setBooks(response.data)
+      const response = await getAllBooks();
+      setBooks(response.data);
     }
-    fetchData()
-  }, [])
+    fetchData();
+  }, []);
 
   function appendBook(book) {
-    let booksClone = books
-    booksClone.push(book)
-    setBooks(booksClone)
+    let booksClone = books;
+    booksClone.push(book);
+    setBooks(booksClone);
   }
 
   function removeBook(book) {
-    let newBooksList = books.filter((element) => element.id != book.id)
-    setBooks(newBooksList)
+    let newBooksList = books.filter((element) => element.id != book.id);
+    setBooks(newBooksList);
   }
 
   if (books.length == 0) {
@@ -41,14 +49,25 @@ function Admin() {
         <Header navbar={true} />
         <div class="load"></div>
       </div>
-    )
+    );
   }
 
   if (
     sessionStorage.length == 0 ||
     JSON.parse(sessionStorage.getItem("logged_user")).email != "admin@gmail.com"
   ) {
-    return <h1>You don't have access to admin page!</h1>
+    return <h1>You don't have access to admin page!</h1>;
+  }
+
+  function handleUpdate(priceNumber) {
+    if (priceNumber == "") {
+      return true;
+    }
+  }
+
+  function handleUpdate(book) {
+    const list = books.filter((element) => element.id != book.id);
+    setBooks(list);
   }
 
   return (
@@ -79,7 +98,7 @@ function Admin() {
         <button
           className="myButton"
           onClick={() => {
-            setModalOpen(true)
+            setModalAddOpen(true);
           }}
         >
           <span></span>
@@ -89,8 +108,8 @@ function Admin() {
           Add
         </button>
         <Modal
-          isOpen={modalOpen}
-          onRequestClose={() => setModalOpen(false)}
+          isOpen={modalAddOpen}
+          onRequestClose={() => setModalAddOpen(false)}
           shouldCloseOnEsc={true}
           shouldCloseOnOverlayClick={true}
           style={{
@@ -118,30 +137,64 @@ function Admin() {
             closeModal={closeModal}
           />
         </Modal>
+        <Modal
+          isOpen={modalUpdateOpen}
+          onRequestClose={() => setModalUpdateOpen(false)}
+          shouldCloseOnEsc={true}
+          shouldCloseOnOverlayClick={true}
+          style={{
+            overlay: {
+              backgroundColor: "rgba(0, 0, 0, 0.75)",
+            },
+            content: {
+              color: "#000",
+              top: "50%",
+              left: "50%",
+              right: "auto",
+              bottom: "auto",
+              marginRight: "-50%",
+              transform: "translate(-50%, -50%)",
+              width: "75%",
+              height: "65%",
+              backgroundColor: "#fff",
+              padding: "2rem",
+            },
+          }}
+        >
+          <UpdateBookPriceModal
+            book={book}
+            changePrice={handleUpdate}
+            closeModal={setModalUpdateOpen(false)}
+          />
+        </Modal>
       </div>
       <br />
-      <BookList books={books} removeBook={removeBook} />
+      <BookList
+        books={books}
+        removeBook={removeBook}
+        openModal={openUpdateModal}
+      />
     </div>
-  )
+  );
 }
 
 async function getAllBooks() {
   var config = {
     method: "get",
     url: "http://127.0.0.1:8000/api/books",
-  }
+  };
 
   let res = axios(config)
     .then(function (response) {
       // console.log(JSON.stringify(response.data))
-      return response.data
+      return response.data;
     })
     .catch(function (error) {
       // console.log(error)
-      return error
-    })
+      return error;
+    });
 
-  return res
+  return res;
 }
 
-export default Admin
+export default Admin;

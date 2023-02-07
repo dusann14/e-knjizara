@@ -5,7 +5,7 @@ import Header from "../Header/Header";
 
 function Reservations({ reservations }) {
   console.log(reservations);
-  if (reservations.length === 0) return <>You don't have any reservations</>;
+  if (reservations === null) return <>You don't have any reservations</>;
 
   return (
     <>
