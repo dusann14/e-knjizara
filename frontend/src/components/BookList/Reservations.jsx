@@ -1,11 +1,10 @@
-import React from "react";
-import "./BookList.css";
-import Book from "../BookList/Book";
-import Header from "../Header/Header";
+import React from "react"
+import "./BookList.css"
+import Book from "../BookList/Book"
 
 function Reservations({ reservations, removeBook }) {
-  console.log(reservations);
-  if (reservations == null) return <>You don't have any reservations</>;
+  console.log(reservations)
+  if (reservations == null) return <>You don't have any reservations</>
 
   return (
     <>
@@ -20,13 +19,13 @@ function Reservations({ reservations, removeBook }) {
                   removeBook={removeBook}
                   reservationId={item.id}
                 />
-              );
+              )
             })}
           </div>
         </div>
       </section>
     </>
-  );
+  )
 }
 
-export default Reservations;
+export default Reservations
