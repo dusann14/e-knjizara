@@ -1,17 +1,17 @@
-import React from "react"
-import Book from "../BookList/Book"
-import { useState, useEffect } from "react"
-import "./AddBookModal.css"
-import axios from "axios"
-import qs from "qs"
+import React from "react";
+import Book from "../BookList/Book";
+import { useState, useEffect } from "react";
+import "./AddBookModal.css";
+import axios from "axios";
+import qs from "qs";
 
 function UpdateBookPriceModal({ book, changePrice, closeModal }) {
-  const [price, setPrice] = useState(0)
+  const [price, setPrice] = useState(0);
 
   async function handleUpdate() {
     var data = qs.stringify({
       price: price,
-    })
+    });
 
     var config = {
       method: "put",
@@ -21,17 +21,36 @@ function UpdateBookPriceModal({ book, changePrice, closeModal }) {
         "Content-Type": "application/x-www-form-urlencoded",
       },
       data: data,
-    }
+    };
 
     axios(config)
       .then(function (response) {
-        console.log(JSON.stringify(response.data))
-        closeModal()
-        changePrice(book, price)
+        console.log(JSON.stringify(response.data));
+        closeModal();
+        changePrice(book, price);
       })
       .catch(function (error) {
-        console.log(error)
-      })
+        console.log(error);
+      });
+  }
+
+  function image() {
+    if (book.image !== null) {
+      return (
+        <img
+          style={{ width: "20%", height: "5%" }}
+          src={`http://127.0.0.1:8000${book.image.url}`}
+        />
+      );
+    } else
+      return (
+        <img
+          style={{ width: "20%", height: "5%" }}
+          src={
+            "https://t4.ftcdn.net/jpg/04/73/25/49/360_F_473254957_bxG9yf4ly7OBO5I0O5KABlN930GwaMQz.jpg"
+          }
+        ></img>
+      );
   }
 
   return (
@@ -44,7 +63,7 @@ function UpdateBookPriceModal({ book, changePrice, closeModal }) {
       }}
     >
       <br />
-      <img style={{ width: "20%", height: "5%" }} src={`http://127.0.0.1:8000${book.image.url}`} />
+      {image()}
       <br />
       <p>Title: {book.title}</p>
       <br />
@@ -61,7 +80,7 @@ function UpdateBookPriceModal({ book, changePrice, closeModal }) {
         Update
       </button>
     </div>
-  )
+  );
 }
 
-export default UpdateBookPriceModal
+export default UpdateBookPriceModal;

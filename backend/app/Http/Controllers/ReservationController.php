@@ -14,11 +14,18 @@ class ReservationController extends Controller
 {
     public function index($user_id)
     {
-        $reservations = Reservation::get()->where('user_id', $user_id);
+        $allReservations = Reservation::get()->where('user_id', $user_id);
 
-        if ($reservations->isEmpty()) {
+        if ($allReservations->isEmpty()) {
             return response()->json(['message' => 'data not found'], 404);
         }
+
+        $reservations = $allReservations->filter(function ($reservation) {
+            return $reservation['book'] !== null;
+        });
+
+        $reservations->all();
+
         return new ReservationCollection($reservations);
     }
 
