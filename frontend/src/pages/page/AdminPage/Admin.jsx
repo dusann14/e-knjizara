@@ -47,13 +47,24 @@ function Admin() {
     setBooks(newBooksList)
   }
 
-  if (books.length == 0) {
-    return (
-      <div>
-        <Header navbar={true} />
-        <div class="load"></div>
-      </div>
-    )
+  function displayBooksList() {
+    if (books.length > 0) {
+      return <BookList books={books} removeBook={removeBook} openModal={openUpdateModal} />
+    } else {
+      return (
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            marginTop: "40vh",
+          }}
+        >
+          <h1>There are no books previously created</h1>
+        </div>
+      )
+    }
   }
 
   if (
@@ -76,103 +87,77 @@ function Admin() {
   return (
     <div>
       <Header navbar={true} />
-      <br />
-      <br />
-      <div
+      <div className="welcomeAdminDiv">
+        <div>
+          <h1>Welcome to admin page</h1>
+        </div>
+        <button className="createBookBtn" onClick={() => setModalAddOpen(true)}>
+          Create new books
+        </button>
+      </div>
+
+      <Modal
+        isOpen={modalAddOpen}
+        onRequestClose={() => setModalAddOpen(false)}
+        shouldCloseOnEsc={true}
+        shouldCloseOnOverlayClick={true}
         style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          gap: "20px",
+          overlay: {
+            backgroundColor: "rgba(0, 0, 0, 0.75)",
+          },
+          content: {
+            color: "#000",
+            top: "50%",
+            left: "50%",
+            right: "auto",
+            bottom: "auto",
+            marginRight: "-50%",
+            transform: "translate(-50%, -50%)",
+            width: "75%",
+            height: "75%",
+            backgroundColor: "#fff",
+            padding: "2rem",
+          },
         }}
       >
-        <div className="image-email">
-          <Avatar
-            src={sessionStorage.getItem("profile_image")}
-            style={{ width: "15vh", height: "15vh" }}
-          />
-
-          <p>{JSON.parse(sessionStorage.getItem("logged_user")).email}</p>
-        </div>
-      </div>
+        <AddBookModal
+          //user={user}
+          appendBook={appendBook}
+          closeModal={closeModalAdd}
+        />
+      </Modal>
+      <Modal
+        isOpen={modalUpdateOpen}
+        onRequestClose={() => setModalUpdateOpen(false)}
+        shouldCloseOnEsc={true}
+        shouldCloseOnOverlayClick={true}
+        style={{
+          overlay: {
+            backgroundColor: "rgba(0, 0, 0, 0.75)",
+          },
+          content: {
+            color: "#000",
+            top: "50%",
+            left: "50%",
+            right: "auto",
+            bottom: "auto",
+            marginRight: "-50%",
+            transform: "translate(-50%, -50%)",
+            width: "75%",
+            height: "65%",
+            backgroundColor: "#fff",
+            padding: "2rem",
+          },
+        }}
+      >
+        <UpdateBookPriceModal
+          book={book}
+          changePrice={handleUpdate}
+          closeModal={closeModalUpdate}
+        />
+      </Modal>
       <br />
-      <br />
-      <div className="buttons">
-        <button
-          className="myButton"
-          onClick={() => {
-            setModalAddOpen(true)
-          }}
-        >
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
-          Add
-        </button>
-        <Modal
-          isOpen={modalAddOpen}
-          onRequestClose={() => setModalAddOpen(false)}
-          shouldCloseOnEsc={true}
-          shouldCloseOnOverlayClick={true}
-          style={{
-            overlay: {
-              backgroundColor: "rgba(0, 0, 0, 0.75)",
-            },
-            content: {
-              color: "#000",
-              top: "50%",
-              left: "50%",
-              right: "auto",
-              bottom: "auto",
-              marginRight: "-50%",
-              transform: "translate(-50%, -50%)",
-              width: "75%",
-              height: "75%",
-              backgroundColor: "#fff",
-              padding: "2rem",
-            },
-          }}
-        >
-          <AddBookModal
-            //user={user}
-            appendBook={appendBook}
-            closeModal={closeModalAdd}
-          />
-        </Modal>
-        <Modal
-          isOpen={modalUpdateOpen}
-          onRequestClose={() => setModalUpdateOpen(false)}
-          shouldCloseOnEsc={true}
-          shouldCloseOnOverlayClick={true}
-          style={{
-            overlay: {
-              backgroundColor: "rgba(0, 0, 0, 0.75)",
-            },
-            content: {
-              color: "#000",
-              top: "50%",
-              left: "50%",
-              right: "auto",
-              bottom: "auto",
-              marginRight: "-50%",
-              transform: "translate(-50%, -50%)",
-              width: "75%",
-              height: "65%",
-              backgroundColor: "#fff",
-              padding: "2rem",
-            },
-          }}
-        >
-          <UpdateBookPriceModal
-            book={book}
-            changePrice={handleUpdate}
-            closeModal={closeModalUpdate}
-          />
-        </Modal>
-      </div>
-      <br />
-      <BookList books={books} removeBook={removeBook} openModal={openUpdateModal} />
+      {displayBooksList()}
     </div>
   )
 }
