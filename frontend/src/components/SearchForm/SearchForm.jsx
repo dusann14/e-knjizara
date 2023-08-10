@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { FaSearch } from "react-icons/fa"
+import { AiOutlineFileSearch } from "react-icons/ai"
 import { useNavigate } from "react-router-dom"
 import "./SearchForm.css"
 
@@ -29,7 +29,7 @@ const SearchForm = () => {
                 onChange={handleChange}
               />
               <button type="submit" className="flex flex-c">
-                <FaSearch className="text-purple" size={32} />
+                <AiOutlineFileSearch className="text-green" size={32} />
               </button>
             </div>
           </form>
