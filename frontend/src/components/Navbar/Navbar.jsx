@@ -112,7 +112,7 @@ const Navbar = () => {
     <nav className="navbar" id="navbar">
       <div className="container" style={{ display: "flex" }}>
         <div className="brand-and-toggler flex flex-sb">
-          <span className="text-uppercase fw-7 fs-24 ls-1">Book store</span>
+          <span className="text-uppercase fw-7 fs-24 ls-1 p2ptext">Book store</span>
           <button type="button" className="navbar-toggler-btn" onClick={handleNavbar}>
             <HiOutlineMenuAlt3
               size={35}

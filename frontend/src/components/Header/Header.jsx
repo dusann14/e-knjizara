@@ -13,7 +13,7 @@ const Header = ({ navbar }) => {
     } else {
       return (
         <div className="header-content flex flex-c text-center text-white">
-          <h2 className="header-title text-capitalize">Find your book of choice.</h2>
+          <h2 className="header-title text-capitalize">Search for your favorite author</h2>
           <br />
           <p className="header-text fs-18 fw-3"></p>
           <SearchForm />
