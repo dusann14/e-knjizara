@@ -1,50 +1,50 @@
-import Header from "../../../components/Header/Header"
-import BookList from "../../../components/BookList/BookList"
-import Button from "../../../components/Button/Button"
-import AddBookModal from "../../../components/Modal/AddBookModal"
-import "./Admin.css"
-import { Avatar } from "antd"
-import React, { useState, useEffect } from "react"
-import Modal from "react-modal"
-import axios from "axios"
-import UpdateBookPriceModal from "../../../components/Modal/UpdateBookPriceModal"
+import Header from "../../../components/Header/Header";
+import BookList from "../../../components/BookList/BookList";
+import Button from "../../../components/Button/Button";
+import AddBookModal from "../../../components/Modal/AddBookModal";
+import "./Admin.css";
+import { Avatar } from "antd";
+import React, { useState, useEffect } from "react";
+import Modal from "react-modal";
+import axios from "axios";
+import UpdateBookPriceModal from "../../../components/Modal/UpdateBookPriceModal";
 
 function Admin() {
-  const [modalAddOpen, setModalAddOpen] = useState(false)
-  const [modalUpdateOpen, setModalUpdateOpen] = useState(false)
-  const [books, setBooks] = useState([])
-  const [book, setBook] = useState([])
+  const [modalAddOpen, setModalAddOpen] = useState(false);
+  const [modalUpdateOpen, setModalUpdateOpen] = useState(false);
+  const [books, setBooks] = useState([]);
+  const [book, setBook] = useState([]);
 
   function closeModalAdd() {
-    setModalAddOpen(false)
+    setModalAddOpen(false);
   }
 
   function closeModalUpdate() {
-    setModalUpdateOpen(false)
+    setModalUpdateOpen(false);
   }
 
   function openUpdateModal(book) {
-    setBook(book)
-    setModalUpdateOpen(true)
+    setBook(book);
+    setModalUpdateOpen(true);
   }
 
   useEffect(() => {
     async function fetchData() {
-      const response = await getAllBooks()
-      setBooks(response.data)
+      const response = await getAllBooks();
+      setBooks(response.data);
     }
-    fetchData()
-  }, [])
+    fetchData();
+  }, []);
 
   function appendBook(book) {
-    let booksClone = books
-    booksClone.push(book)
-    setBooks(booksClone)
+    let booksClone = books;
+    booksClone.push(book);
+    setBooks(booksClone);
   }
 
   function removeBook(book) {
-    let newBooksList = books.filter((element) => element.id != book.id)
-    setBooks(newBooksList)
+    let newBooksList = books.filter((element) => element.id != book.id);
+    setBooks(newBooksList);
   }
 
   function displayBooksList() {
@@ -71,17 +71,17 @@ function Admin() {
     sessionStorage.length == 0 ||
     JSON.parse(sessionStorage.getItem("logged_user")).email != "admin@gmail.com"
   ) {
-    return <h1>You don't have access to admin page!</h1>
+    return <h1>You don't have access to admin page!</h1>;
   }
 
   function handleUpdate(book, price) {
-    const list = books
+    const list = books;
     list.forEach((element) => {
       if (element.id == book.id) {
-        element.price = price
+        element.price = price;
       }
-    })
-    setBooks(list)
+    });
+    setBooks(list);
   }
 
   return (
@@ -158,27 +158,28 @@ function Admin() {
       </Modal>
       <br />
       {displayBooksList()}
+
     </div>
-  )
+  );
 }
 
 async function getAllBooks() {
   var config = {
     method: "get",
     url: "http://127.0.0.1:8000/api/books",
-  }
+  };
 
   let res = axios(config)
     .then(function (response) {
       // console.log(JSON.stringify(response.data))
-      return response.data
+      return response.data;
     })
     .catch(function (error) {
       // console.log(error)
-      return error
-    })
+      return error;
+    });
 
-  return res
+  return res;
 }
 
-export default Admin
+export default Admin;
